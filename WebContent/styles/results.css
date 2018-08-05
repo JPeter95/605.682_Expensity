@@ -1,0 +1,112 @@
+/* apply a natural box layout model to all elements */
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup,
+	menu, nav, section {
+	display: block;
+}
+
+header {
+	font-family: Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	color: darkblue;
+	border-bottom: 1px solid rgb(182, 182, 182);
+}
+
+header img {
+	width: 100%;
+	height: 50%;
+}
+
+header h1 {
+	font-size: 18pt;
+	margin-left: 2em;
+	padding: 10px;
+}
+
+body {
+	background-color: lightyellow;
+}
+
+form {
+	padding: auto;
+	margin-left: 4em;
+}
+
+fieldset {
+	border: 1px solid rgb(200, 200, 200);
+}
+
+fieldset.contact input {
+	border: 1px transparent rgb(190, 190, 190);
+	background: rgb(255, 255, 175);
+}
+
+fieldset.employment label {
+	margin-left: -2px;
+	margin-right: 5px;
+}
+
+legend {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	padding: 10px;
+	color: darkblue;
+}
+
+p {
+	margin-left: 4em;
+}
+
+table {
+	margin-left: 4em;
+	border-collapse: collapse;
+}
+
+tr {
+	border: solid;
+	border-width: 1px 0;
+}
+
+tr:first-child {
+	border-top: none;
+}
+
+tr:last-child {
+	border-bottom: none;
+}
+
+th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+}
+
+#cost {
+	padding-left: 150px;
+	text-align: right;
+}
+
+div {
+	padding-top: 10px;
+}
+
+div #submit {
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	padding-left: 50px;
+	padding-right: 50px;
+	background: rgb(250, 250, 250);
+	border-color: darkblue;
+	border-radius: 5px;
+}
+
+div #submit:hover {
+	background-color: darkblue;
+	color: white;
+}
