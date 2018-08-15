@@ -44,7 +44,7 @@ body, html {
 		</div>
 
 		<div class="w3-display-topright w3-padding-large">
-			<form method="GET" action="ServletController">
+			<form method="GET" action="SslController">
 				<input class="w3-button w3-white" type="submit" id="signup" name="action" value="Signup"> 
 				<input class="w3-button w3-white" type="submit" id="login" name="action" value="Login">
 			</form>

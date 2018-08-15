@@ -47,15 +47,7 @@ public class ServletController extends HttpServlet {
         String action = request.getParameter("action");
         
         // perform action and set URL to appropriate page
-        if (action.equals("Signup")) {
-        	user = (ResultUserBean) session.getAttribute("user");
-        	url = "/signup.jsp";
-        } 
-        else if (action.equals("Login")) {
-        	user = (ResultUserBean) session.getAttribute("user");
-            url = "/login.jsp";
-        } 
-        else if (action.equals("CreateUser")) {
+        if (action.equals("CreateUser")) {
         	user = servlet.processRequest(request);
         	String password1 = request.getParameter("password");
         	String password2 = request.getParameter("password-repeat");
