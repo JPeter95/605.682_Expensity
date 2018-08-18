@@ -23,70 +23,74 @@ import edu.jhu.sample.worker.ServletUserBean;
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public ServletController() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public ServletController() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		ServletUserBean servlet = new ServletUserBean();
-		
-		String url = "/index.jsp";
-        ServletContext sc = getServletContext();
 
-        ResultUserBean user = new ResultUserBean();
-        HttpSession session = request.getSession();
-        String errorText = "";
-        
-        // get current action
-        String action = request.getParameter("action");
-        
-        // perform action and set URL to appropriate page
-        if (action.equals("CreateUser")) {
-        	user = servlet.processRequest(request);
-        	String password1 = request.getParameter("password");
-        	String password2 = request.getParameter("password-repeat");
-        	if (!password1.isEmpty() && password1.equals(password2)) {
-        		// TODO: Make DB entry call here, with user name, email, and p/w
-        		url = "/home.jsp";
-        	} else {
-        		errorText = "Passwords did not match, try again";
-        		user.setPassword("");
-        		url = "/signup.jsp";
-        	}
-        }
-        else if (action.equals("LoginUser")) {
-        	// TODO: Make DB retrieval call here, with user email and p/w
-        	user = servlet.processRequest(request);
-        	if (user.getPassword().isEmpty()) {
-        		errorText = "Invalid User Name or Password";
-        		user.setPassword("");
-        		url = "/login.jsp";
-        	} else {
-        		url = "/home.jsp";
-        	}
-        }
-        else if (action.equals("Home")) {
-        	url = "/home.jsp";
-        }
-        
-        session.setAttribute("errorText", errorText);
-        session.setAttribute("user", user);
-        request.setAttribute("user", user);
-        
+		String url = "/index.jsp";
+		ServletContext sc = getServletContext();
+
+		ResultUserBean user = new ResultUserBean();
+		HttpSession session = request.getSession();
+		String errorText = "";
+
+		// get current action
+		String action = request.getParameter("action");
+
+		// perform action and set URL to appropriate page
+		if (action.equals("CreateUser")) {
+			user = servlet.processRequest(request);
+			String password1 = request.getParameter("password");
+			String password2 = request.getParameter("password-repeat");
+			if (!password1.isEmpty() && password1.equals(password2)) {
+				// TODO: Make DB entry call here, with user name, email, and p/w
+				url = "/home.jsp";
+			} else {
+				errorText = "Passwords did not match, try again";
+				user.setPassword("");
+				url = "/signup.jsp";
+			}
+		} else if (action.equals("LoginUser")) {
+			// TODO: Make DB retrieval call here, with user email and p/w
+			user = servlet.processRequest(request);
+			if (user.getPassword().isEmpty()) {
+				errorText = "Invalid User Name or Password";
+				user.setPassword("");
+				url = "/login.jsp";
+			} else {
+				url = "/home.jsp";
+			}
+		} else if (action.equals("Home")) {
+			url = "/home.jsp";
+		} else if (action.equals("AddExpense")) {
+			url = "/add.jsp";
+		}
+
+		session.setAttribute("errorText", errorText);
+		session.setAttribute("user", user);
+		request.setAttribute("user", user);
+
 		sc.getRequestDispatcher(url).forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
