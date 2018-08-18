@@ -35,15 +35,21 @@ body, html {
 	<div
 		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
 		<div class="w3-display-middle">
-			<h1 class="w3-jumbo w3-animate-top">Add Tables here</h1>
+			<!-- <h1 class="w3-jumbo w3-animate-top">Add Tables here</h1>
 			<hr class="w3-border-grey" style="margin: auto; width: 40%">
 			<p class="w3-large w3-center">This is the main page, after the
-				user logs in</p>
-			<form method="POST" action="ServletController"
-				style="border: 1px solid #ccc">
-				<button type="submit" class="addbtn" name="action"
-					value="AddExpense">Add</button>
+				user logs in</p> -->
+			<form action="SqlGatewayServlet" method="POST">
+				<input type="hidden" name="action" value="showData">
+				<input type="submit" class="button button_Submit" value="Show Data">
 			</form>
+			<form action="ServletController" method="POST"
+				style="border: 1px solid #ccc">
+				<button type="submit" class="addbtn" name="action" value="AddExpense">Add</button>
+			</form>
+			
+			${regSQLResult}
+			
 		</div>
 	</div>
 </body>

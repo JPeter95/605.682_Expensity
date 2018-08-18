@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.jhu.sample.data.UserDB;
+import edu.jhu.sample.results.ResultExpenseBean;
 import edu.jhu.sample.results.ResultUserBean;
 import edu.jhu.sample.worker.ServletUserBean;
 
@@ -47,21 +49,40 @@ public class ServletController extends HttpServlet {
 
 		// get current action
 		String action = request.getParameter("action");
-
-		// perform action and set URL to appropriate page
-		if (action.equals("CreateUser")) {
-			user = servlet.processRequest(request);
-			String password1 = request.getParameter("password");
-			String password2 = request.getParameter("password-repeat");
-			if (!password1.isEmpty() && password1.equals(password2)) {
-				// TODO: Make DB entry call here, with user name, email, and p/w
-				url = "/home.jsp";
-			} else {
-				errorText = "Passwords did not match, try again";
-				user.setPassword("");
-				url = "/signup.jsp";
-			}
-		} else if (action.equals("LoginUser")) {
+		
+		// Retrieve action and set URL to appropriate page
+        if (action.equals("Signup")) {
+        	user = (ResultUserBean) session.getAttribute("user");
+        	url = "/signup.jsp";
+        } 
+        else if (action.equals("Login")) {	
+            url = "/login.jsp";
+        } 
+        else if (action.equals("CreateUser")) {
+        	user = servlet.processRequest(request);
+        	String password1 = request.getParameter("password");
+        	String password2 = request.getParameter("password-repeat");
+        	if (!password1.isEmpty() && password1.equals(password2)) {
+        		boolean userExists = UserDB.emailExists(user.getEmail());
+        		if (!userExists) {
+        			int userAddedCheck = UserDB.createUser(user);
+        			if (userAddedCheck == 1) {
+        			url = "/home.jsp";
+        			} else {
+        				errorText = "Something went wrong. Try again";
+        				url = "/signup.jsp";
+        			}
+        		} else {
+        			errorText = "User already exists. Try with different email.";
+        			user.setPassword("");
+        			url = "/signup.jsp";
+        		} 
+        	} else {
+        		errorText = "Passwords did not match, try again";
+        		user.setPassword("");
+        		url = "/signup.jsp";
+        	}
+        } else if (action.equals("LoginUser")) {
 			// TODO: Make DB retrieval call here, with user email and p/w
 			user = servlet.processRequest(request);
 			if (user.getPassword().isEmpty()) {
@@ -75,7 +96,11 @@ public class ServletController extends HttpServlet {
 			url = "/home.jsp";
 		} else if (action.equals("AddExpense")) {
 			url = "/add.jsp";
-		}
+		}//Clear the Session and Logout the user
+        else if (action.equals("Logout")) {
+        	session.setAttribute("user", null) ; 
+            url = "/index.jsp";
+        }
 
 		session.setAttribute("errorText", errorText);
 		session.setAttribute("user", user);
