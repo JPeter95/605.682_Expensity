@@ -101,6 +101,7 @@ public class ServletController extends HttpServlet {
         	session.setAttribute("user", null) ; 
             url = "/index.jsp";
         }
+        //Just Testing
 
 		session.setAttribute("errorText", errorText);
 		session.setAttribute("user", user);
