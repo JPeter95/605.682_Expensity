@@ -97,6 +97,7 @@ public class ServletController extends HttpServlet {
 			url = "/add.jsp";
 		} else if (action.equals("AddExpense!")) {
 			expense = servlet.processDetails(request);
+			String note = request.getParameter("note");
 			String amount = request.getParameter("amount");
 			String date = request.getParameter("date");
 			String description = request.getParameter("description");

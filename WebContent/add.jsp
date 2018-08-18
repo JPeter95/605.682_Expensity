@@ -57,7 +57,7 @@ input.currency {
 		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
 		<form action="ServletController">
 			<div class="form-group">
-				<select class="selectpicker">
+				<select class="selectpicker" name="note" required>
 					<optgroup label="Advertising">
 						<option>Consultation Fee</option>
 						<option>Service Fee</option>
