@@ -4,15 +4,12 @@
 <%@ page import="java.util.*"%>
 <%@page import="edu.jhu.sample.results.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:import url="/includes/header.html" />
+<c:import url="/includes/favicon.html" />
 
+<!-- Template from: https://www.w3schools.com/w3css/w3css_templates.asp -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	href="https://fonts.googleapis.com/css?family=Raleway">
 
 <style>
 body, h1 {
@@ -29,191 +26,134 @@ body, html {
 	background-position: center;
 	background-size: cover;
 }
+
+form {
+	margin: 20px auto;
+	width: 420px;
+}
+
+.form-row {
+	padding: 5px 10px;
+}
+
+label {
+	display: block;
+	margin: 3px 0;
+}
+
+.form-row input {
+	padding: 3px 1px;
+	width: 100%;
+}
+
+input.currency {
+	text-align: right;
+	padding-right: 15px;
+}
 </style>
 
 <body>
 	<div
 		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-		<div class="btn-group">
+		<form action="ServletController">
+			<div class="form-group">
+				<select class="selectpicker">
+					<optgroup label="Advertising">
+						<option>Consultation Fee</option>
+						<option>Service Fee</option>
+					</optgroup>
+					<optgroup label="Car & Truck Expenses">
+						<option>Gas</option>
+						<option>Mileage</option>
+						<option>Repairs</option>
+						<option>Vehicle Insurance</option>
+						<option>Vehicle Licensing</option>
+					</optgroup>
+					<optgroup label="Contractors">
+						<option>Contractors</option>
+					</optgroup>
+					<optgroup label="Education and Training">
+						<option>Books</option>
+						<option>Certification</option>
+						<option>Subscription</option>
+					</optgroup>
+					<optgroup label="Employee Benefits">
+						<option>Accident Insurance</option>
+						<option>Health Insurance</option>
+						<option>Life Insurance</option>
+					</optgroup>
+					<optgroup label="Meals & Entertainment">
+						<option>Movies</option>
+						<option>CD</option>
+						<option>Dine Out</option>
+					</optgroup>
+					<optgroup label="Office Expenses & Postage">
+						<option>Hardware</option>
+						<option>Office Supplies</option>
+						<option>Packaging</option>
+						<option>Postage</option>
+						<option>Printing</option>
+						<option>Shipping & Couriers</option>
+						<option>Software</option>
+					</optgroup>
+					<optgroup label="Other Expenses">
+						<option>Bank Fees</option>
+						<option>Business Insurance</option>
+						<option>Commissions</option>
+						<option>Deprecation</option>
+						<option>Interest - Mortgage</option>
+						<option>Interest - Other</option>
+						<option>Online Services</option>
+						<option>Reference Materials</option>
+						<option>Repairs & Maintenance</option>
+						<option>Subscriptions/Dues/Memberships</option>
+						<option>Taxes & Licenses</option>
+						<option>Wages</option>
+					</optgroup>
+					<optgroup label="Personal">
+						<option>Personal</option>
+					</optgroup>
+					<optgroup label="Professional Services">
+						<option>Accounting</option>
+						<option>Legal Fees</option>
+						<option>Equipment</option>
+						<option>Machinery</option>
+						<option>Office Space</option>
+						<option>Vehicles</option>
+					</optgroup>
+					<optgroup label="Supplies">
+						<option>Supplies</option>
+					</optgroup>
+					<optgroup label="Travel">
+						<option>Airfare</option>
+						<option>Hotel/Lodging/Accommodation</option>
+					</optgroup>
+					<optgroup label="Utilities">
+						<option>Gas & Electrical</option>
+						<option>Phone</option>
+				</select>
 
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Advertising <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Consultation Fee</a></li>
-					<li><a href="#">Service Fee</a></li>
-				</ul>
+				<div class="form-row">
+					<label for="amount"><b>Amount</b></label> <input type="amount"
+						placeholder="Expense Amount" name="amount"
+						value="${expense.amount}" min="0" step="0.01"
+						data-number-to-fixed="2" data-number-stepfactor="100"
+						class="currency" id="c1" required>
+				</div>
+
+				<div class="form-row hide-inputbtns">
+					<label for="date"><b>Date</b></label> <input class="date"
+						type="date" placeholder="YYYY-MM-DD" data-date-split-input="true"
+						name="date" value="${expense.date}" required>
+				</div>
+
+				<div class="form-row">
+					<label for="description"><b>Description:</b></label> <input
+						type="description" placeholder="Expense Description:"
+						name="description" value="${expense.description}" required>
+				</div>
+				<input type="submit" name="action" value="AddExpense!">
 			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Car & Truck Expenses <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Gas</a></li>
-					<li><a href="#">Mileage</a></li>
-					<li><a href="#">Repairs</a></li>
-					<li><a href="#">Vehicle Insurance</a></li>
-					<li><a href="#">Vehicle Licensing</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Contractors <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Contractors</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Education and Training <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Books</a></li>
-					<li><a href="#">Certification</a></li>
-					<li><a href="#">Subscription</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Employee Benefits <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Accident Insurance</a></li>
-					<li><a href="#">Health Insurance</a></li>
-					<li><a href="#">Life Insurance</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Meals & Entertainment <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Movies</a></li>
-					<li><a href="#">CD</a></li>
-					<li><a href="#">Dine Out</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Office Expenses & Postage <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Hardware</a></li>
-					<li><a href="#">Office Supplies</a></li>
-					<li><a href="#">Packaging</a></li>
-					<li><a href="#">Postage</a></li>
-					<li><a href="#">Printing</a></li>
-					<li><a href="#">Shipping & Couriers</a></li>
-					<li><a href="#">Software</a></li>
-				</ul>
-			</div>
-		</div>
-
-		<div class="btn-group pull-right">
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Other Expenses <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Bank Fees</a></li>
-					<li><a href="#">Business Insurance</a></li>
-					<li><a href="#">Commissions</a></li>
-					<li><a href="#">Deprecation</a></li>
-					<li><a href="#">Interest - Mortgage</a></li>
-					<li><a href="#">Interest - Other</a></li>
-					<li><a href="#">Online Services</a></li>
-					<li><a href="#">Reference Materials</a></li>
-					<li><a href="#">Repairs & Maintenance</a></li>
-					<li><a href="#">Subscriptions/Dues/Memberships</a></li>
-					<li><a href="#">Taxes & Licenses</a></li>
-					<li><a href="#">Wages</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Personal <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Personal</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Professional Services <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Professional Services</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Rent or Lease <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Accounting</a></li>
-					<li><a href="#">Legal Fees</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Supplies <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Equipment</a></li>
-					<li><a href="#">Machinery</a></li>
-					<li><a href="#">Office Space</a></li>
-					<li><a href="#">Vehicles</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Travel <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Airfare</a></li>
-					<li><a href="#">Hotel/Lodging/Accommodation</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Utilities <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Gas & Electrical</a></li>
-					<li><a href="#">Phone</a></li>
-				</ul>
-			</div>
-
-		</div>
+		</form>
 	</div>
-</body>
-
 </html>

@@ -40,16 +40,18 @@ body, html {
 			<p class="w3-large w3-center">This is the main page, after the
 				user logs in</p> -->
 			<form action="SqlGatewayServlet" method="POST">
-				<input type="hidden" name="action" value="showData">
-				<input type="submit" class="button button_Submit" value="Show Data">
+				<input type="hidden" name="action" value="showData"> <input
+					type="submit" class="button button_Submit" value="Show Data">
 			</form>
 			<form action="ServletController" method="POST"
 				style="border: 1px solid #ccc">
-				<button type="submit" class="addbtn" name="action" value="AddExpense">Add</button>
+				<input class="w3-button w3-white" type="submit" id="add"
+					name="action" value="AddExpense">
+
 			</form>
-			
+
 			${regSQLResult}
-			
+
 		</div>
 	</div>
 </body>
