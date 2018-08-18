@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import edu.jhu.sample.data.UserDB;
 import edu.jhu.sample.results.ResultExpenseBean;
 import edu.jhu.sample.results.ResultUserBean;
+import edu.jhu.sample.util.MailUtilGmail;
 import edu.jhu.sample.worker.ServletUserBean;
 
 /**
@@ -66,6 +68,7 @@ public class ServletController extends HttpServlet {
 				if (!userExists) {
 					int userAddedCheck = UserDB.createUser(user);
 					if (userAddedCheck == 1) {
+						sendEmailConfirmation(request, user);
 						url = "/home.jsp";
 					} else {
 						errorText = "Something went wrong. Try again";
@@ -116,6 +119,35 @@ public class ServletController extends HttpServlet {
 
 		sc.getRequestDispatcher(url).forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	private void sendEmailConfirmation(HttpServletRequest request, ResultUserBean user) {
+		// get parameters from the request
+		String email = user.getEmail();
+		String name = user.getName();
+
+		// send email to user
+		String to = email;
+		String from = "jd4164136@gmail.com";
+		String subject = "Welcome to our email list";
+		String body = "Dear " + name + ",\n\n"
+				+ "Thanks for joining our email list. We'll make sure to send "
+				+ "you announcements about new products and promotions.\n"
+				+ "Have a great day and thanks again!\n\n" + "John Doe\n" + "Expensity";
+		boolean isBodyHTML = false;
+
+		try {
+			// MailUtilLocal.sendMail(to, from, subject, body, isBodyHTML);
+			MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+		} catch (MessagingException e) {
+			String errorMessage = "ERROR: Unable to send email. " + "Check Tomcat logs for details.<br>"
+					+ "NOTE: You may need to configure your system " + "as described in chapter 14.<br>"
+					+ "ERROR MESSAGE: " + e.getMessage();
+			request.setAttribute("errorMessage", errorMessage);
+			this.log("Unable to send email. \n" + "Here is the email you tried to send: \n"
+					+ "=====================================\n" + "TO: " + email + "\n" + "FROM: "
+					+ from + "\n" + "SUBJECT: " + subject + "\n" + "\n" + body + "\n\n");
+		}
 	}
 
 	/**
