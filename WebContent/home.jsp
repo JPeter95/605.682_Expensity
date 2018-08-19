@@ -44,7 +44,7 @@ body, html {
 					type="submit" class="button button_Submit" value="Show Data">
 			</form>
 			
-			<form action="add.jsp">
+			<form method="POST" action="ServletController">
 				<input class="w3-button w3-white" type="submit" id="add"
 					name="action" value="AddExpense">
 			</form>

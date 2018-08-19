@@ -228,7 +228,7 @@ h1, label {
 				<div class="clearfix">
 					<button type="reset" class="cancelbtn">Reset</button>
 					<button type="submit" class="addbtn" name="action"
-						value="AddExpense">Add Expense</button>
+						value="AddExpense!">Add Expense</button>
 				</div>
 			</div>
 		</form>

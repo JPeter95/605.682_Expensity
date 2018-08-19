@@ -106,13 +106,15 @@ public class ServletController extends HttpServlet {
         	}
 			
 		} else if (action.equals("AddExpense")) {
+			url = "/add.jsp";
+		} else if (action.equals("AddExpense!")) {
 			if (session.isNew()) {
-        		url = "/index.jsp";
+        		url = "/home.jsp";
         	} else {
         		user = (ResultUserBean) session.getAttribute("user");
 				expense = servlet.processDetails(request);
 				UserDB.addExpense(user.getEmail(), expense);
-				url = "/home.jsp";
+				url = "/index.jsp";
         	}
 			
 			// Navigate to Edit.jsp with given expense
