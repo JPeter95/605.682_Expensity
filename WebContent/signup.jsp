@@ -14,6 +14,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 * {box-sizing: border-box}
 
+body, html {
+	height: 100%
+}
+
 /* Full-width input fields */
 input[type=text], input[type=email], input[type=password] {
     width: 100%;
@@ -99,7 +103,7 @@ button:hover {
 	  </form>
 	</div>
 	
-	<form method="POST" action="ServletController" style="border:1px solid #ccc">
+	<form method="POST" action="ServletController">
 	  <div class="container">
 	  	<p style="color: red">${errorText}</p>
 	  

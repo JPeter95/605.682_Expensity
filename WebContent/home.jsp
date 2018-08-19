@@ -43,11 +43,10 @@ body, html {
 				<input type="hidden" name="action" value="showData"> <input
 					type="submit" class="button button_Submit" value="Show Data">
 			</form>
-			<form action="ServletController" method="POST"
-				style="border: 1px solid #ccc">
+			
+			<form action="add.jsp">
 				<input class="w3-button w3-white" type="submit" id="add"
 					name="action" value="AddExpense">
-
 			</form>
 
 			${regSQLResult}
