@@ -82,7 +82,7 @@ h1, label {
 }
 
 /* Float cancel and login buttons and add an equal width */
-.cancelbtn, .addbtn {
+.cancelbtn, .edit {
 	float: left;
 	width: 50%;
 }
@@ -124,7 +124,7 @@ h1, label {
 			<div class="container">
 				<p style="color: red">${errorText}</p>
 
-				<h1>Add Expense</h1>
+				<h1>Edit Expense</h1>
 				<hr>
 				
 				<div class="inline">
@@ -227,8 +227,8 @@ h1, label {
 				
 				<div class="clearfix">
 					<button type="reset" class="cancelbtn">Reset</button>
-					<button type="submit" class="addbtn" name="action"
-						value="AddExpense">Add Expense</button>
+					<button type="submit" class="editbtn" name="action"
+						value="EditExpense">Edit Expense</button>
 				</div>
 			</div>
 		</form>

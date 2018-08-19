@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import edu.jhu.sample.data.UserDB;
 import edu.jhu.sample.results.ResultExpenseBean;
 import edu.jhu.sample.results.ResultUserBean;
+import edu.jhu.sample.results.ResultWorkerBean;
 import edu.jhu.sample.util.MailUtilGmail;
 import edu.jhu.sample.worker.ServletUserBean;
 
@@ -42,6 +43,7 @@ public class ServletController extends HttpServlet {
 			throws ServletException, IOException {
 		ServletUserBean servlet = new ServletUserBean();
 
+		this.log("HERE1------------------------------------------------");
 		String url = "/index.jsp";
 		ServletContext sc = getServletContext();
 
@@ -84,6 +86,7 @@ public class ServletController extends HttpServlet {
 				user.setPassword("");
 				url = "/signup.jsp";
 			}
+			
 		} else if (action.equals("LoginUser")) {
 			// TODO: Make DB retrieval call here, with user email and p/w
 			user = servlet.processRequest(request);
@@ -94,18 +97,58 @@ public class ServletController extends HttpServlet {
 			} else {
 				url = "/home.jsp";
 			}
+			
 		} else if (action.equals("Home")) {
-			url = "/home.jsp";
+			if (session.isNew()) {
+        		url = "/index.jsp";
+        	} else {
+        		url = "/home.jsp";
+        	}
+			
 		} else if (action.equals("AddExpense")) {
-			url = "/add.jsp";
-		} else if (action.equals("AddExpense!")) {
-			expense = servlet.processDetails(request);
-			String note = request.getParameter("note");
-			String amount = request.getParameter("amount");
-			String date = request.getParameter("date");
-			String description = request.getParameter("description");
-			UserDB.addExpense(user.getEmail(), expense);
-			url = "/home.jsp";
+			if (session.isNew()) {
+        		url = "/index.jsp";
+        	} else {
+        		user = (ResultUserBean) session.getAttribute("user");
+				expense = servlet.processDetails(request);
+				UserDB.addExpense(user.getEmail(), expense);
+				url = "/home.jsp";
+        	}
+			
+			// Navigate to Edit.jsp with given expense
+		} else if (action.equals("EditPage")) {
+			if (session.isNew()) {
+        		url = "/index.jsp";
+        	} else {
+        		// TODO
+        		//ResultExpenseBean expense_to_edit = request.getParameter("expense_to_edit");
+        		//session.setAttribute("expense", expense_to_edit);
+        		url = "/edit.jsp";
+        	}
+			
+			// Edit Expense thru DB, and redirect back to Home.jsp
+		} else if (action.equals("EditExpense")) {
+			if (session.isNew()) {
+        		url = "/index.jsp";
+        	} else {
+        		user = (ResultUserBean) session.getAttribute("user");
+        		// TODO: Make DB edit call here, with user email and expense
+        		//expense = servlet.processDetails(request);
+        		//UserDB.editExpense(user.getEmail(), expense);
+        		url = "/home.jsp";
+        	}
+			
+		} else if (action.equals("DeleteExpense")) {
+			if (session.isNew()) {
+        		url = "/index.jsp";
+        	} else {
+				user = (ResultUserBean) session.getAttribute("user");
+	    		// TODO: Make DB delete call here, with user email and expense id(?)
+				//ResultExpenseBean expense_to_remove = request.getParameter("expense_to_remove");
+				//UserDB.deleteExpense(user.getEmail(), expense_to_remove);
+				url = "/home.jsp";
+        	}
+			
 		} // Clear the Session and Logout the user
 		else if (action.equals("Logout")) {
 			session.setAttribute("user", null);
