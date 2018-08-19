@@ -82,7 +82,7 @@ h1, label {
 }
 
 /* Float cancel and login buttons and add an equal width */
-.cancelbtn, .edit {
+.cancelbtn, .editbtn {
 	float: left;
 	width: 50%;
 }

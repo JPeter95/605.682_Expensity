@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import edu.jhu.sample.data.UserDB;
 import edu.jhu.sample.results.ResultExpenseBean;
 import edu.jhu.sample.results.ResultUserBean;
-import edu.jhu.sample.results.ResultWorkerBean;
 import edu.jhu.sample.util.MailUtilGmail;
 import edu.jhu.sample.worker.ServletUserBean;
 
@@ -43,7 +42,6 @@ public class ServletController extends HttpServlet {
 			throws ServletException, IOException {
 		ServletUserBean servlet = new ServletUserBean();
 
-		this.log("HERE1------------------------------------------------");
 		String url = "/index.jsp";
 		ServletContext sc = getServletContext();
 
@@ -109,12 +107,12 @@ public class ServletController extends HttpServlet {
 			url = "/add.jsp";
 		} else if (action.equals("AddExpense!")) {
 			if (session.isNew()) {
-        		url = "/home.jsp";
+        		url = "/index.jsp";
         	} else {
         		user = (ResultUserBean) session.getAttribute("user");
 				expense = servlet.processDetails(request);
 				UserDB.addExpense(user.getEmail(), expense);
-				url = "/index.jsp";
+				url = "/home.jsp";
         	}
 			
 			// Navigate to Edit.jsp with given expense
