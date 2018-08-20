@@ -81,14 +81,14 @@ h1, label {
 	background-color: #f44336;
 }
 
-/* Float cancel and login buttons and add an equal width */
+/* Float cancel and edit buttons and add an equal width */
 .cancelbtn, .editbtn {
 	float: left;
 	width: 50%;
 }
 
 /* Add padding to container elements */
-.container, .inline {
+.container {
 	margin: auto;
 	padding: 16px;
 	width: 60%; 
@@ -109,18 +109,27 @@ h1, label {
 	display: table;
 }
 
-/* Change styles for cancel button and login button on extra small screens */
+/* Change styles for cancel button and edit button on extra small screens */
 @media screen and (max-width: 300px) {
-	.cancelbtn, .loginbtn {
+	.cancelbtn, .editbtn {
 		width: 100%;
 	}
 }
 </style>
 
 <body>
+	<%
+		ResultExpenseBean bean = new ResultExpenseBean();
+		if (session.getAttribute("expense") != null) {
+			bean = (ResultExpenseBean) session.getAttribute("expense");
+		}
+		
+		String note = bean.getNote();
+	%>
+
 	<div class="bgimg w3-display-container">
 
-		<form method="POST" action="ServletController">
+		<form method="POST" action="SqlGateway">
 			<div class="container">
 				<p style="color: red">${errorText}</p>
 
@@ -131,84 +140,83 @@ h1, label {
 				<label for="note"><b>Note</b></label>
 				<select name="note" required>
 					<optgroup label="Advertising">
-						<option>Consultation Fee</option>
-						<option>Service Fee</option>
+						<option value="Consultation Fee" <%if(note.equals("Consultation Fee")){%>selected<%}%>>Consultation Fee</option>
+						<option value="Service Fee" <%if(note.equals("Service Fee")){%>selected<%}%>>Service Fee</option>
 					</optgroup>
 					<optgroup label="Car & Truck Expenses">
-						<option>Gas</option>
-						<option>Mileage</option>
-						<option>Repairs</option>
-						<option>Vehicle Insurance</option>
-						<option>Vehicle Licensing</option>
+						<option value="Gas" <%if(note.equals("Gas")){%>selected<%}%>>Gas</option>
+						<option value="Repairs" <%if(note.equals("Repairs")){%>selected<%}%>>Repairs</option>
+						<option value="Vehicle Insurance" <%if(note.equals("Vehicle Insurance")){%>selected<%}%>>Vehicle Insurance</option>
+						<option value="Vehicle Licensing" <%if(note.equals("Vehicle Licensing")){%>selected<%}%>>Vehicle Licensing</option>
 					</optgroup>
 					<optgroup label="Contractors">
-						<option>Contractors</option>
+						<option value="Contractors" <%if(note.equals("Contractors")){%>selected<%}%>>Contractors</option>
 					</optgroup>
 					<optgroup label="Education and Training">
-						<option>Books</option>
-						<option>Certification</option>
-						<option>Subscription</option>
+						<option value="Books" <%if(note.equals("Books")){%>selected<%}%>>Books</option>
+						<option value="Certification" <%if(note.equals("Certification")){%>selected<%}%>>Certification</option>
+						<option value="Subscription" <%if(note.equals("Subscription")){%>selected<%}%>>Subscription</option>
 					</optgroup>
 					<optgroup label="Employee Benefits">
-						<option>Accident Insurance</option>
-						<option>Health Insurance</option>
-						<option>Life Insurance</option>
+						<option value="Accident Insurance" <%if(note.equals("Accident Insurance")){%>selected<%}%>>Accident Insurance</option>
+						<option value="Health Insurance" <%if(note.equals("Health Insurance")){%>selected<%}%>>Health Insurance</option>
+						<option value="Life Insurance" <%if(note.equals("Life Insurance")){%>selected<%}%>>Life Insurance</option>
 					</optgroup>
 					<optgroup label="Meals & Entertainment">
-						<option>Movies</option>
-						<option>CD</option>
-						<option>Dine Out</option>
+						<option value="Movies" <%if(note.equals("Movies")){%>selected<%}%>>Movies</option>
+						<option value="CD" <%if(note.equals("CD")){%>selected<%}%>>CD</option>
+						<option value="Dine Out" <%if(note.equals("Dine Out")){%>selected<%}%>>Dine Out</option>
 					</optgroup>
 					<optgroup label="Office Expenses & Postage">
-						<option>Hardware</option>
-						<option>Office Supplies</option>
-						<option>Packaging</option>
-						<option>Postage</option>
-						<option>Printing</option>
-						<option>Shipping & Couriers</option>
-						<option>Software</option>
+						<option value="Hardware" <%if(note.equals("Hardware")){%>selected<%}%>>Hardware</option>
+						<option value="Office Supplies" <%if(note.equals("Office Supplies")){%>selected<%}%>>Office Supplies</option>
+						<option value="Packaging" <%if(note.equals("Packaging")){%>selected<%}%>>Packaging</option>
+						<option value="Postage" <%if(note.equals("Postage")){%>selected<%}%>>Postage</option>
+						<option value="Printing" <%if(note.equals("Printing")){%>selected<%}%>>Printing</option>
+						<option value="Shipping & Couriers" <%if(note.equals("Shipping & Couriers")){%>selected<%}%>>Shipping & Couriers</option>
+						<option value="Software" <%if(note.equals("Gas")){%>selected<%}%>>Software</option>
 					</optgroup>
 					<optgroup label="Other Expenses">
-						<option>Bank Fees</option>
-						<option>Business Insurance</option>
-						<option>Commissions</option>
-						<option>Deprecation</option>
-						<option>Interest - Mortgage</option>
-						<option>Interest - Other</option>
-						<option>Online Services</option>
-						<option>Reference Materials</option>
-						<option>Repairs & Maintenance</option>
-						<option>Subscriptions/Dues/Memberships</option>
-						<option>Taxes & Licenses</option>
-						<option>Wages</option>
+						<option value="Bank Fees" <%if(note.equals("Bank Fees")){%>selected<%}%>>Bank Fees</option>
+						<option value="Business Insurance" <%if(note.equals("Business Insurance")){%>selected<%}%>>Business Insurance</option>
+						<option value="Commissions" <%if(note.equals("Commissions")){%>selected<%}%>>Commissions</option>
+						<option value="Deprecation" <%if(note.equals("Deprecation")){%>selected<%}%>>Deprecation</option>
+						<option value="Interest - Mortgage" <%if(note.equals("Interest - Mortgage")){%>selected<%}%>>Interest - Mortgage</option>
+						<option value="Interest - Other" <%if(note.equals("Interest - Other")){%>selected<%}%>>Interest - Other</option>
+						<option value="Online Services" <%if(note.equals("Online Services")){%>selected<%}%>>Online Services</option>
+						<option value="Reference Materials" <%if(note.equals("Reference Materials")){%>selected<%}%>>Reference Materials</option>
+						<option value="Repairs & Maintenance" <%if(note.equals("Repairs & Maintenance")){%>selected<%}%>>Repairs & Maintenance</option>
+						<option value="Subscriptions/Dues/Memberships" <%if(note.equals("Subscriptions/Dues/Memberships")){%>selected<%}%>>Subscriptions/Dues/Memberships</option>
+						<option value="Taxes & Licenses" <%if(note.equals("Taxes & Licenses")){%>selected<%}%>>Taxes & Licenses</option>
+						<option value="Wages" <%if(note.equals("Wages")){%>selected<%}%>>Wages</option>
 					</optgroup>
 					<optgroup label="Professional Services">
-						<option>Accounting</option>
-						<option>Legal Fees</option>
-						<option>Equipment</option>
-						<option>Machinery</option>
-						<option>Office Space</option>
-						<option>Vehicles</option>
+						<option value="Accounting" <%if(note.equals("Accounting")){%>selected<%}%>>Accounting</option>
+						<option value="Legal Fees" <%if(note.equals("Legal Fees")){%>selected<%}%>>Legal Fees</option>
+						<option value="Equipment" <%if(note.equals("Equipment")){%>selected<%}%>>Equipment</option>
+						<option value="Machinery" <%if(note.equals("Machinery")){%>selected<%}%>>Machinery</option>
+						<option value="Office Space" <%if(note.equals("Office Space")){%>selected<%}%>>Office Space</option>
+						<option value="Vehicles" <%if(note.equals("Vehicles")){%>selected<%}%>>Vehicles</option>
 					</optgroup>
 					<optgroup label="Supplies">
-						<option>Supplies</option>
+						<option value="Supplies" <%if(note.equals("Supplies")){%>selected<%}%>>Supplies</option>
 					</optgroup>
 					<optgroup label="Travel">
-						<option>Airfare</option>
-						<option>Hotel/Lodging/Accommodation</option>
+						<option value="Airfare" <%if(note.equals("Airfare")){%>selected<%}%>>Airfare</option>
+						<option value="Hotel/Lodging/Accommodation" <%if(note.equals("Hotel/Lodging/Accommodation")){%>selected<%}%>>Hotel/Lodging/Accommodation</option>
 					</optgroup>
 					<optgroup label="Utilities">
-						<option>Gas & Electrical</option>
-						<option>Phone</option>
+						<option value="Gas & Electrical" <%if(note.equals("Gas & Electrical")){%>selected<%}%>>Gas & Electrical</option>
+						<option value="Phone" <%if(note.equals("Phone")){%>selected<%}%>>Phone</option>
 					</optgroup>
 					<optgroup label="Personal">
-						<option>Personal</option>
-						<option>Other</option>
+						<option value="Personal" <%if(note.equals("Personal")){%>selected<%}%>>Personal</option>
+						<option value="Other" <%if(note.equals("Other")){%>selected<%}%>>Other</option>
 					</optgroup>
 				</select>
 				
 				<label for="description"><b>Description</b></label> 
-				<input type="text" placeholder="Expense Description" name="description"
+				<input type="text" placeholder="Expense Description" name="description" size=99
 					value="${expense.description}" required>
 				</div>
 				

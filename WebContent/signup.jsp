@@ -103,7 +103,7 @@ button:hover {
 	  </form>
 	</div>
 	
-	<form method="POST" action="ServletController">
+	<form method="POST" action="SqlGateway">
 	  <div class="container">
 	  	<p style="color: red">${errorText}</p>
 	  

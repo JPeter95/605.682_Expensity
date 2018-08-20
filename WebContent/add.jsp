@@ -81,14 +81,14 @@ h1, label {
 	background-color: #f44336;
 }
 
-/* Float cancel and login buttons and add an equal width */
+/* Float cancel and add buttons and add an equal width */
 .cancelbtn, .addbtn {
 	float: left;
 	width: 50%;
 }
 
 /* Add padding to container elements */
-.container, .inline {
+.container {
 	margin: auto;
 	padding: 16px;
 	width: 60%; 
@@ -109,9 +109,9 @@ h1, label {
 	display: table;
 }
 
-/* Change styles for cancel button and login button on extra small screens */
+/* Change styles for cancel button and add button on extra small screens */
 @media screen and (max-width: 300px) {
-	.cancelbtn, .loginbtn {
+	.cancelbtn, .addbtn {
 		width: 100%;
 	}
 }
@@ -120,7 +120,7 @@ h1, label {
 <body>
 	<div class="bgimg w3-display-container">
 
-		<form method="POST" action="ServletController">
+		<form method="POST" action="SqlGateway">
 			<div class="container">
 				<p style="color: red">${errorText}</p>
 
@@ -131,84 +131,83 @@ h1, label {
 				<label for="note"><b>Note</b></label>
 				<select name="note" required>
 					<optgroup label="Advertising">
-						<option>Consultation Fee</option>
-						<option>Service Fee</option>
+						<option value="Consultation Fee">Consultation Fee</option>
+						<option value="Service Fee">Service Fee</option>
 					</optgroup>
 					<optgroup label="Car & Truck Expenses">
-						<option>Gas</option>
-						<option>Mileage</option>
-						<option>Repairs</option>
-						<option>Vehicle Insurance</option>
-						<option>Vehicle Licensing</option>
+						<option value="Gas">Gas</option>
+						<option value="Repairs">Repairs</option>
+						<option value="Vehicle Insurance">Vehicle Insurance</option>
+						<option value="Vehicle Licensing">Vehicle Licensing</option>
 					</optgroup>
 					<optgroup label="Contractors">
-						<option>Contractors</option>
+						<option value="Contractors">Contractors</option>
 					</optgroup>
 					<optgroup label="Education and Training">
-						<option>Books</option>
-						<option>Certification</option>
-						<option>Subscription</option>
+						<option value="Books">Books</option>
+						<option value="Certification">Certification</option>
+						<option value="Subscription">Subscription</option>
 					</optgroup>
 					<optgroup label="Employee Benefits">
-						<option>Accident Insurance</option>
-						<option>Health Insurance</option>
-						<option>Life Insurance</option>
+						<option value="Accident Insurance">Accident Insurance</option>
+						<option value="Health Insurance">Health Insurance</option>
+						<option value="Life Insurance">Life Insurance</option>
 					</optgroup>
 					<optgroup label="Meals & Entertainment">
-						<option>Movies</option>
-						<option>CD</option>
-						<option>Dine Out</option>
+						<option value="Movies">Movies</option>
+						<option value="CD">CD</option>
+						<option value="Dine Out">Dine Out</option>
 					</optgroup>
 					<optgroup label="Office Expenses & Postage">
-						<option>Hardware</option>
-						<option>Office Supplies</option>
-						<option>Packaging</option>
-						<option>Postage</option>
-						<option>Printing</option>
-						<option>Shipping & Couriers</option>
-						<option>Software</option>
+						<option value="Hardware">Hardware</option>
+						<option value="Office Supplies">Office Supplies</option>
+						<option value="Packaging">Packaging</option>
+						<option value="Postage">Postage</option>
+						<option value="Printing">Printing</option>
+						<option value="Shipping & Couriers">Shipping & Couriers</option>
+						<option value="Software">Software</option>
 					</optgroup>
 					<optgroup label="Other Expenses">
-						<option>Bank Fees</option>
-						<option>Business Insurance</option>
-						<option>Commissions</option>
-						<option>Deprecation</option>
-						<option>Interest - Mortgage</option>
-						<option>Interest - Other</option>
-						<option>Online Services</option>
-						<option>Reference Materials</option>
-						<option>Repairs & Maintenance</option>
-						<option>Subscriptions/Dues/Memberships</option>
-						<option>Taxes & Licenses</option>
-						<option>Wages</option>
+						<option value="Bank Fees">Bank Fees</option>
+						<option value="Business Insurance">Business Insurance</option>
+						<option value="Commissions">Commissions</option>
+						<option value="Deprecation">Deprecation</option>
+						<option value="Interest - Mortgage">Interest - Mortgage</option>
+						<option value="Interest - Other">Interest - Other</option>
+						<option value="Online Services">Online Services</option>
+						<option value="Reference Materials">Reference Materials</option>
+						<option value="Repairs & Maintenance">Repairs & Maintenance</option>
+						<option value="Subscriptions/Dues/Memberships">Subscriptions/Dues/Memberships</option>
+						<option value="Taxes & Licenses">Taxes & Licenses</option>
+						<option value="Wages">Wages</option>
 					</optgroup>
 					<optgroup label="Professional Services">
-						<option>Accounting</option>
-						<option>Legal Fees</option>
-						<option>Equipment</option>
-						<option>Machinery</option>
-						<option>Office Space</option>
-						<option>Vehicles</option>
+						<option value="Accounting">Accounting</option>
+						<option value="Legal Fees">Legal Fees</option>
+						<option value="Equipment">Equipment</option>
+						<option value="Machinery">Machinery</option>
+						<option value="Office Space">Office Space</option>
+						<option value="Vehicles">Vehicles</option>
 					</optgroup>
 					<optgroup label="Supplies">
-						<option>Supplies</option>
+						<option value="Supplies">Supplies</option>
 					</optgroup>
 					<optgroup label="Travel">
-						<option>Airfare</option>
-						<option>Hotel/Lodging/Accommodation</option>
+						<option value="Airfare">Airfare</option>
+						<option value="Hotel/Lodging/Accommodation">Hotel/Lodging/Accommodation</option>
 					</optgroup>
 					<optgroup label="Utilities">
-						<option>Gas & Electrical</option>
-						<option>Phone</option>
+						<option value="Gas & Electrical">Gas & Electrical</option>
+						<option value="Phone">Phone</option>
 					</optgroup>
 					<optgroup label="Personal">
-						<option>Personal</option>
-						<option>Other</option>
+						<option value="Personal">Personal</option>
+						<option value="Other">Other</option>
 					</optgroup>
 				</select>
 				
 				<label for="description"><b>Description</b></label> 
-				<input type="text" placeholder="Expense Description" name="description"
+				<input type="text" placeholder="Expense Description" name="description" size=99
 					value="${expense.description}" required>
 				</div>
 				
@@ -228,7 +227,7 @@ h1, label {
 				<div class="clearfix">
 					<button type="reset" class="cancelbtn">Reset</button>
 					<button type="submit" class="addbtn" name="action"
-						value="AddExpense!">Add Expense</button>
+						value="AddExpense">Add Expense</button>
 				</div>
 			</div>
 		</form>

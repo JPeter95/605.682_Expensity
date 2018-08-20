@@ -29,8 +29,11 @@ body, html {
 </style>
 
 <body>
-	<div
-		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+	<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+		<div class="w3-display-topmiddle">
+			<p style="color: red">${errorText}</p>
+		</div>
+
 		<div class="w3-display-middle">
 			<h1 class="w3-jumbo w3-animate-top">EXPENSITY</h1>
 			<hr class="w3-border-grey" style="margin: auto; width: 40%">

@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class ResultUserBean implements Serializable {
 
-	String name;
-	String email;
-	String password;
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private String email;
+	private String password;
 
 	public ResultUserBean() {
 		this.name = "";

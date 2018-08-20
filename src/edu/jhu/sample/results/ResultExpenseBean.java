@@ -5,12 +5,14 @@ import java.io.Serializable;
 public class ResultExpenseBean implements Serializable {
 
 		private static final long serialVersionUID = 1L;
+		private Integer ID;
 		private String description;
 		private String amount;
 		private String date;
 		private String note;
 
 		public ResultExpenseBean() {
+			this.ID = 0;
 			this.description = "";
 			this.amount = "";
 			this.date = "";
@@ -23,6 +25,20 @@ public class ResultExpenseBean implements Serializable {
 			this.amount = amount;
 			this.date = date;
 			this.note = note;
+		}
+		
+		/**
+		 * @return the ID
+		 */
+		public Integer getID() {
+			return ID;
+		}
+
+		/**
+		 * @param ID the ID to set
+		 */
+		public void setID(Integer ID) {
+			this.ID = ID;
 		}
 
 		/**

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.jhu.sample.results.ResultUserBean;
-import edu.jhu.sample.worker.ServletUserBean;
+import edu.jhu.sample.worker.ServletProcessorBean;
 
 /**
  * Servlet implementation class SslController
@@ -34,7 +34,7 @@ public class SslController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletUserBean servlet = new ServletUserBean();
+		ServletProcessorBean servlet = new ServletProcessorBean();
 		
 		String url = "/index.jsp";
         ServletContext sc = getServletContext();
