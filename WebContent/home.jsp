@@ -88,8 +88,7 @@ th {
 
 /* Float add buttons and add an equal width */
 .addbtn {
-	float: left;
-	width: 50%;
+	width: 100%;
 }
 
 /* Extra styles for the cancel button */
@@ -146,21 +145,15 @@ th {
 		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
 		<div class="w3-display-middle">
 
-				<p style="color: red">${errorText}</p>
+			<p style="color: red">${errorText}</p>
 
-				<p>
-					Hello <b><%=name%></b>, Welcome to Expensity!
-				</p>
-				<p>
-					You currently have <b><%=numOfExpenses%></b> expense(s)...
-				</p>
+			<p>
+				Hello <b><%=name%></b>, Welcome to Expensity!
+			</p>
+			<p>
+				You currently have <b><%=numOfExpenses%></b> expense(s) totaling <b>$<%=total%></b>
+			</p>
 
-			<form action="add.jsp">
-				<div class="clearfix">
-					<button type="submit" class="addbtn" name="action"
-						value="AddExpense">Add Expense</button>
-				</div>
-			</form>
 			<table>
 				<tr>
 					<th>Expense</th>
@@ -203,6 +196,13 @@ th {
 					<th></th>
 				</tr>
 			</table>
+			
+			<form action="add.jsp">
+				<div class="clearfix">
+					<button type="submit" class="addbtn" name="action"
+						value="AddExpense">Add Expense</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </body>
