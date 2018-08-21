@@ -202,7 +202,10 @@ public class SqlGateway extends HttpServlet {
 				// Logout the user
 				else if (action.equals("Logout")) {
 					if (!session.isNew()) {
-						session.invalidate();
+						session.setAttribute("errorText", null);
+						session.setAttribute("user", null);
+						session.setAttribute("expenses", null);
+						session.setAttribute("expense", null);
 					}
 					url = "/index.jsp";
 				}
