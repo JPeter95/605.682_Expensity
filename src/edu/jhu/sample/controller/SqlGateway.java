@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import edu.jhu.sample.worker.ServletProcessorBean;
 import edu.jhu.sample.results.ResultUserBean;
 import edu.jhu.sample.results.ResultExpenseBean;
 import edu.jhu.sample.util.CommandsDB;
+import edu.jhu.sample.util.MailUtilGmail;
 
 /**
  * Servlet implementation class SqlGateway
@@ -57,7 +59,7 @@ public class SqlGateway extends HttpServlet {
 
 		ServletContext sc = getServletContext();
 		ServletProcessorBean servlet = new ServletProcessorBean();
-		
+
 		ResultUserBean user = new ResultUserBean();
 		List<ResultExpenseBean> expenses = new ArrayList<>();
 		HttpSession session = request.getSession();
@@ -82,14 +84,14 @@ public class SqlGateway extends HttpServlet {
 						connection = DriverManager.getConnection(dbURL, username, password);
 						try {
 							if (!CommandsDB.emailExists(connection, user.getEmail())) {
-									CommandsDB.insertUser(connection, user);
-									// sendEmailConfirmation(request, user);
-									url = "/home.jsp";
+								CommandsDB.insertUser(connection, user);
+								sendEmailConfirmation(request, user);
+								url = "/home.jsp";
 							} else {
 								errorText = "User already exists. Try with different email.";
 								user.setPassword("");
 							}
-						} catch(Exception e) {
+						} catch (Exception e) {
 							errorText = "Something went wrong! Unable to create user.";
 						}
 					} else {
@@ -97,7 +99,7 @@ public class SqlGateway extends HttpServlet {
 						user.setPassword("");
 					}
 				}
-				
+
 				// Login a user
 				else if (action.equals("LoginUser")) {
 					url = "/login.jsp";
@@ -113,15 +115,15 @@ public class SqlGateway extends HttpServlet {
 							errorText = "Invalid Email or Password.";
 							user.setPassword("");
 						}
-					} catch(Exception e) {
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to login user.";
 					}
 				}
-				
+
 				// Add an expense
 				else if (action.equals("AddExpense")) {
 					url = "/add.jsp";
-	        		user = (ResultUserBean) session.getAttribute("user");
+					user = (ResultUserBean) session.getAttribute("user");
 					ResultExpenseBean expense = servlet.processExpense(request);
 					Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
@@ -129,43 +131,43 @@ public class SqlGateway extends HttpServlet {
 						CommandsDB.insertExpense(connection, user.getEmail(), expense);
 						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
 						url = "/home.jsp";
-					} catch(Exception e) {
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to add expense.";
 					}
 				}
-				
+
 				// Remove expense
 				else if (action.equals("RemoveExpense")) {
 					url = "/home.jsp";
 					user = (ResultUserBean) session.getAttribute("user");
-	        		Class.forName("com.mysql.jdbc.Driver");
+					Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
 						Integer expenseID = Integer.parseInt(request.getParameter("expense_to_remove"));
 						CommandsDB.deleteExpense(connection, expenseID);
 						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
-					} catch(Exception e) {
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to remove expense.";
 					}
 				}
-				
+
 				// Edit expense page
 				else if (action.equals("EditPage")) {
 					url = "/home.jsp";
 					user = (ResultUserBean) session.getAttribute("user");
-	        		Class.forName("com.mysql.jdbc.Driver");
+					Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
 						Integer expenseID = Integer.parseInt(request.getParameter("expense_to_edit"));
 						ResultExpenseBean expense = CommandsDB.selectExpense(connection, expenseID);
-		        		session.setAttribute("expense", expense);
-		        		request.setAttribute("expense", expense);
-		        		url = "/edit.jsp";
-					} catch(Exception e) {
+						session.setAttribute("expense", expense);
+						request.setAttribute("expense", expense);
+						url = "/edit.jsp";
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to load expense to edit.";
 					}
 				}
-				
+
 				// Make edit
 				else if (action.equals("EditExpense")) {
 					url = "/edit.jsp";
@@ -177,12 +179,12 @@ public class SqlGateway extends HttpServlet {
 						Integer expenseID = ((ResultExpenseBean) session.getAttribute("expense")).getId();
 						CommandsDB.editExpense(connection, expenseID, expense);
 						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
-		        		url = "/home.jsp";
-					} catch(Exception e) {
+						url = "/home.jsp";
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to load expense to edit.";
 					}
 				}
-				
+
 				// Home (Expenses) Page
 				else if (action.equals("Home")) {
 					url = "/home.jsp";
@@ -191,11 +193,11 @@ public class SqlGateway extends HttpServlet {
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
 						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
-					} catch(Exception e) {
+					} catch (Exception e) {
 						errorText = "Something went wrong! Unable to load expense list.";
 					}
 				}
-				
+
 				// Logout the user
 				else if (action.equals("Logout")) {
 					if (!session.isNew()) {
@@ -206,8 +208,7 @@ public class SqlGateway extends HttpServlet {
 					}
 					url = "/index.jsp";
 				}
-				
-				
+
 			}
 			// ----------------- Error Catching -----------------
 			catch (ClassNotFoundException e) {
@@ -229,13 +230,41 @@ public class SqlGateway extends HttpServlet {
 		session.setAttribute("user", user);
 		request.setAttribute("user", user);
 		request.setAttribute("expenses", expenses);
-	
+
 		request.getRequestDispatcher(url).forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
+	}
+
+	private void sendEmailConfirmation(HttpServletRequest request, ResultUserBean user) {
+		// get parameters from the request
+		String email = user.getEmail();
+		String name = user.getName();
+
+		// send email to user
+		String to = email;
+		String from = "jd4164136@gmail.com";
+		String subject = "Welcome to our email list";
+		String body = "Dear " + name + ",\n\n" + "Thanks for joining our email list. We'll make sure to send "
+				+ "you announcements about new products and promotions.\n" + "Have a great day and thanks again!\n\n"
+				+ "John Doe\n" + "Expensity";
+		boolean isBodyHTML = false;
+
+		try {
+			// MailUtilLocal.sendMail(to, from, subject, body, isBodyHTML);
+			MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+		} catch (MessagingException e) {
+			String errorMessage = "ERROR: Unable to send email. " + "Check Tomcat logs for details.<br>"
+					+ "NOTE: You may need to configure your system " + "as described in chapter 14.<br>"
+					+ "ERROR MESSAGE: " + e.getMessage();
+			request.setAttribute("errorMessage", errorMessage);
+			this.log("Unable to send email. \n" + "Here is the email you tried to send: \n"
+					+ "=====================================\n" + "TO: " + email + "\n" + "FROM: " + from + "\n"
+					+ "SUBJECT: " + subject + "\n" + "\n" + body + "\n\n");
+		}
 	}
 }
