@@ -87,9 +87,9 @@ public class CommandsDB {
 			resultSet = statement.executeQuery(sqlStatement);
 
 			if (resultSet.next()) {
-				validExpense.setID(resultSet.getInt("ID"));
+				validExpense.setId(resultSet.getInt("ID"));
 				validExpense.setAmount(resultSet.getString("Amount"));
-				validExpense.setDescription(resultSet.getString("Note"));
+				validExpense.setNote(resultSet.getString("Note"));
 				validExpense.setDescription(resultSet.getString("Description"));
 				validExpense.setDate(resultSet.getString("Date"));
 			}
@@ -110,7 +110,7 @@ public class CommandsDB {
 		String sqlStatement = String.format(
 				"UPDATE Expenses " + "SET Note = '%s', Description = '%s', Amount = '%s', Date = '%s' "
 						+ "WHERE ID = '%d'",
-				expense.getNote(), expense.getAmount(), expense.getDescription(), expense.getDate(), expenseID);
+				expense.getNote(), expense.getDescription(), expense.getAmount(), expense.getDate(), expenseID);
 		Statement statement = connection.createStatement();
 		statement.executeUpdate(sqlStatement);
 
@@ -138,12 +138,13 @@ public class CommandsDB {
 
 			while (true) {
 				if (isResultSet) {
-					ResultExpenseBean expense = new ResultExpenseBean();
+					ResultExpenseBean expense;
 					resultSet = statement.getResultSet();
 					while (resultSet.next()) {
-						expense.setID(resultSet.getInt("ID"));
+						expense = new ResultExpenseBean();
+						expense.setId(resultSet.getInt("ID"));
 						expense.setAmount(resultSet.getString("Amount"));
-						expense.setDescription(resultSet.getString("Note"));
+						expense.setNote(resultSet.getString("Note"));
 						expense.setDescription(resultSet.getString("Description"));
 						expense.setDate(resultSet.getString("Date"));
 						expenses.add(expense);

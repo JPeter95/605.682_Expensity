@@ -54,13 +54,8 @@ public class SqlGateway extends HttpServlet {
 			errorText = "Error executing the SQL statement: <br>" + e.getMessage();
 		}
 	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		ServletContext sc = getServletContext();
@@ -69,6 +64,7 @@ public class SqlGateway extends HttpServlet {
 		ResultUserBean user = new ResultUserBean();
 		List<ResultExpenseBean> expenses = new ArrayList<>();
 		HttpSession session = request.getSession();
+		errorText = "";
 
 		// get current action
 		String action = request.getParameter("action");
@@ -145,15 +141,14 @@ public class SqlGateway extends HttpServlet {
 				else if (action.equals("RemoveExpense")) {
 					url = "/home.jsp";
 					user = (ResultUserBean) session.getAttribute("user");
-					expenses = (List<ResultExpenseBean>) session.getAttribute("expenses");
 	        		Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
 						Integer expenseID = Integer.parseInt(request.getParameter("expense_to_remove"));
 						CommandsDB.deleteExpense(connection, expenseID);
-						expenses = expenses.stream().filter(exp -> exp.getID() != expenseID).collect(Collectors.toList());
+						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
 					} catch(Exception e) {
-						errorText = "Something went wrong! Unable to delete expense.";
+						errorText = "Something went wrong! Unable to remove expense.";
 					}
 				}
 				
@@ -161,14 +156,13 @@ public class SqlGateway extends HttpServlet {
 				else if (action.equals("EditPage")) {
 					url = "/home.jsp";
 					user = (ResultUserBean) session.getAttribute("user");
-					expenses = (List<ResultExpenseBean>) session.getAttribute("expenses");
 	        		Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
 						Integer expenseID = Integer.parseInt(request.getParameter("expense_to_edit"));
 						ResultExpenseBean expense = CommandsDB.selectExpense(connection, expenseID);
 		        		session.setAttribute("expense", expense);
-		        		request.setAttribute("expense",expense);
+		        		request.setAttribute("expense", expense);
 		        		url = "/edit.jsp";
 					} catch(Exception e) {
 						errorText = "Something went wrong! Unable to load expense to edit.";
@@ -183,7 +177,7 @@ public class SqlGateway extends HttpServlet {
 					Class.forName("com.mysql.jdbc.Driver");
 					connection = DriverManager.getConnection(dbURL, username, password);
 					try {
-						Integer expenseID = ((ResultExpenseBean) session.getAttribute("expense")).getID();
+						Integer expenseID = ((ResultExpenseBean) session.getAttribute("expense")).getId();
 						CommandsDB.editExpense(connection, expenseID, expense);
 						expenses = CommandsDB.retrieveExpenses(connection, user.getEmail());
 		        		url = "/home.jsp";
@@ -203,6 +197,14 @@ public class SqlGateway extends HttpServlet {
 					} catch(Exception e) {
 						errorText = "Something went wrong! Unable to load expense list.";
 					}
+				}
+				
+				// Logout the user
+				else if (action.equals("Logout")) {
+					if (!session.isNew()) {
+						session.invalidate();
+					}
+					url = "/index.jsp";
 				}
 				
 				
@@ -225,9 +227,15 @@ public class SqlGateway extends HttpServlet {
 
 		session.setAttribute("errorText", errorText);
 		session.setAttribute("user", user);
+		request.setAttribute("user", user);
 		request.setAttribute("expenses", expenses);
 	
-		sc.getRequestDispatcher(url).forward(request, response);
+		request.getRequestDispatcher(url).forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 }

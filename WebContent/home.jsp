@@ -6,14 +6,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="/includes/header.html" />
 
+<!-- Template from: https://www.w3schools.com/w3css/w3css_templates.asp -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+	href="https://fonts.googleapis.com/css?family=Raleway">
 <style>
 body, h1 {
 	font-family: "Raleway", sans-serif
@@ -30,13 +26,45 @@ body, html {
 	background-size: cover;
 }
 
+/* Set a style for all buttons */
+button {
+	background-color: #33D5FF;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	opacity: 0.9;
+}
+
+button:hover {
+	opacity: 1;
+}
+
 h1, label {
 	color: white;
 }
 
 table {
-	margin-left: 4em;
 	border-collapse: collapse;
+}
+
+#margin {
+	padding-right: 100px;
+}
+
+#cost {
+	text-align: right;
+}
+
+#tablebtn {
+	padding-left: 50px;
+}
+
+p {
+	font-size: 20px;
+	color: black;
 }
 
 tr {
@@ -64,6 +92,18 @@ th {
 	width: 50%;
 }
 
+/* Extra styles for the cancel button */
+.editbtn {
+	padding: 14px 20px;
+	background-color: #4CAF50;
+}
+
+/* Extra styles for the cancel button */
+.removebtn {
+	padding: 14px 20px;
+	background-color: #f44336;
+}
+
 /* Add padding to container elements */
 .container {
 	margin: auto;
@@ -84,11 +124,6 @@ th {
 		width: 100%;
 	}
 }
-
-#cost {
-	padding-left: 150px;
-	text-align: right;
-}
 </style>
 
 <body>
@@ -97,31 +132,28 @@ th {
 		String name = user.getName();
 		String email = user.getEmail();
 
-		List<ResultExpenseBean> expenses = new ArrayList<>();
-		try {
-			expenses = (List<ResultExpenseBean>) request.getAttribute("expenses");
-		} catch (Exception ex) {
-			System.out.println("Error retrieving expenses...");
-		}
-		
-		int numOfExpenses = expenses.size();
+		List<ResultExpenseBean> expenseList = new ArrayList<>();
+		expenseList = (List<ResultExpenseBean>) request.getAttribute("expenses");
+
+		int numOfExpenses = expenseList.size();
 		double total = 0.00;
-		for (ResultExpenseBean expense : expenses) {
+		for (ResultExpenseBean expense : expenseList) {
 			total += Double.parseDouble(expense.getAmount());
 		}
 	%>
 
-	<div class="bgimg w3-display-container w3-animate-opacity">
-		<div class="w3-display-middle container">
+	<div
+		class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+		<div class="w3-display-middle">
 
-			<p style="color: red">${errorText}</p>
+				<p style="color: red">${errorText}</p>
 
-			<p>
-				Hello <b><%=name%></b>, Welcome to Expensity!
-			</p>
-			<p>
-				You current have <b><%=numOfExpenses%></b> expenses...
-			</p>
+				<p>
+					Hello <b><%=name%></b>, Welcome to Expensity!
+				</p>
+				<p>
+					You currently have <b><%=numOfExpenses%></b> expense(s)...
+				</p>
 
 			<form action="add.jsp">
 				<div class="clearfix">
@@ -129,35 +161,34 @@ th {
 						value="AddExpense">Add Expense</button>
 				</div>
 			</form>
-
 			<table>
 				<tr>
 					<th>Expense</th>
 					<th>Description</th>
 					<th>Date</th>
-					<th>Cost</th>
+					<th id="cost">Cost</th>
 					<th></th>
 					<th></th>
 				</tr>
 
-				<c:forEach items="<%=expenses%>" var="expense">
+				<c:forEach items="${requestScope.expenses}" var="exp">
 					<tr>
-						<td><c:out value="${expense.note}" /></td>
-						<td><c:out value="${expense.description}" /></td>
-						<td><c:out value="${expense.date}" /></td>
-						<td id="cost">$<c:out value="${expense.amount}" /></td>
-						<td>
-							<form method="POST" action="SqlGateway">
-								<input type="hidden" name="action" value="RemoveExpense"> <input
-									type="hidden" name="expense_to_remove" value="${expense.id}">
-								<input type="submit" value="Remove">
-							</form>
-						</td>
-						<td>
+						<td id="margin"><c:out value="${exp.note}" /></td>
+						<td id="margin"><c:out value="${exp.description}" /></td>
+						<td id="margin"><c:out value="${exp.date}" /></td>
+						<td id="cost">$<c:out value="${exp.amount}" /></td>
+						<td id="tablebtn">
 							<form method="POST" action="SqlGateway">
 								<input type="hidden" name="action" value="EditPage"> <input
-									type="hidden" name="expense_to_edit" value="${expense.id}">
-								<input type="submit" value="Edit">
+									type="hidden" name="expense_to_edit" value="${exp.id}">
+								<button class="editbtn" type="submit" value="Edit">Edit</button>
+							</form>
+						</td>
+						<td id="tablebtn">
+							<form method="POST" action="SqlGateway">
+								<input type="hidden" name="action" value="RemoveExpense">
+								<input type="hidden" name="expense_to_remove" value="${exp.id}">
+								<button class="removebtn" type="submit" value="Remove">Remove</button>
 							</form>
 						</td>
 					</tr>
@@ -165,14 +196,13 @@ th {
 
 				<tr>
 					<th>Total</th>
-					</th>
-					</th>
-					<th id="cost">$<%=total%>
-					</th>
-					</th>
+					<th></th>
+					<th></th>
+					<th id="cost">$<%=total%></th>
+					<th></th>
+					<th></th>
 				</tr>
 			</table>
-
 		</div>
 	</div>
 </body>

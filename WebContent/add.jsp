@@ -50,7 +50,7 @@ hr {
 
 /* Set a style for all buttons */
 button {
-	background-color: #4CAF50;
+	background-color: #33D5FF;
 	color: white;
 	padding: 14px 20px;
 	margin: 8px 0;
@@ -207,18 +207,16 @@ h1, label {
 				</select>
 				
 				<label for="description"><b>Description</b></label> 
-				<input type="text" placeholder="Expense Description" name="description" size=99
-					value="${expense.description}" required>
+				<input type="text" placeholder="Expense Description" name="description" size=99 required>
 				</div>
 				
 				<div class="inline">
 				<label for="date"><b>Date</b></label> 
 				<input class="date" type="date" placeholder="MM-DD-YYYY" data-date-split-input="true"
-					name="date" value="${expense.date}" required>
+					name="date" required>
 
 				<label for="amount"><b>Amount</b></label> 
-				<input type="number" placeholder="Expense Amount" name="amount"
-					value="${expense.amount}" min="0" step="0.01"
+				<input type="number" placeholder="Expense Amount" name="amount" min="0" step="0.01"
 					data-number-to-fixed="2" data-number-stepfactor="100" required>
 				</div>
 
